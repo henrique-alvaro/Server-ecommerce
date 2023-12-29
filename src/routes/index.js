@@ -2,19 +2,23 @@ const { Router } = require('express')
 
 const routes = Router()
 
+const UserController = require('../controllers/UserController')
+
 routes.get('/', (req, res) => {
    res.send('Hello World')
 })
 
-// Criar e listar usuarios
-routes.post('/users')
-routes.get('/users')
+// Criar usuarios
+routes.post('/users', UserController.createUser)
+// listar todos os usuarios
+routes.get('/users', UserController.listUser)
 
 // Pegar usuario especifico
 routes.get('/users/:user_id')
 
-// Criar e listar usuarios
+// Criar produto
 routes.post('/products/:user_id')
+// Pesquisar usuarios especifico
 routes.get('/products/:user_id')
 
 // Atualizar produtos
@@ -29,6 +33,7 @@ routes.get('/products/:product_id')
 
 // Carrinho
 routes.post('/cart/:user_id')
+// listar todo o carrinho
 routes.get('/cart')
 
 // Pegar um cart especifico
