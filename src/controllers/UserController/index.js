@@ -19,7 +19,19 @@ const userController = {
       } catch (err) {
          return res.status(400).jdon(err)
       }
+   },
+
+   async seachUser(req, res) {
+      const { user_id } = req.params
+
+      try {
+         const user = await User.findById(user_id)
+         return res.status(200).json(user)
+      } catch (err) {
+         return res.status(400).json(err)
+      }
    }
+
 }
 
 
