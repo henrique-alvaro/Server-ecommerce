@@ -17,7 +17,7 @@ const userController = {
          const users = await User.find({})
          return res.status(200).json(users)
       } catch (err) {
-         return res.status(400).jdon(err)
+         return res.status(400).json(err)
       }
    },
 

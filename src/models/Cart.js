@@ -6,7 +6,7 @@ const Schema = new mongoose.Schema({
       ref: 'Product'
    }],
    username: {
-      type: mongoose.Schema.Typres.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
    },
    address: {
