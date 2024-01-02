@@ -5,6 +5,8 @@ const SessionController = require('../controllers/Login')
 const ProductController = require('../controllers/ProductController')
 const CartController = require('../controllers/CartController')
 
+const { authenticate } = require('../middlewares')
+
 const routes = Router()
 
 routes.get('/', (req, res) => {
@@ -22,13 +24,13 @@ routes.get('/users/:user_id', UserController.seachUser)
 routes.post('/sessions', SessionController.createSession)
 
 // Criar produto
-routes.post('/products/:user_id', ProductController.createProduct)
+routes.post('/products/:user_id', authenticate, ProductController.createProduct)
 // Pesquisar produtos do usuarios
-routes.get('/:user_id/products', ProductController.listUserProduct)
+routes.get('/:user_id/products', authenticate, ProductController.listUserProduct)
 // Atualizar produtos
-routes.patch('/products/:user_id/:product_id', ProductController.updateProduct)
+routes.patch('/products/:user_id/:product_id', authenticate, ProductController.updateProduct)
 // Deletar produtos
-routes.delete('/products/:user_id/:product_id', ProductController.deleteProduct)
+routes.delete('/products/:user_id/:product_id', authenticate, ProductController.deleteProduct)
 
 // Listar todos os produtos
 routes.get('/products', ProductController.listProduct)
@@ -36,11 +38,11 @@ routes.get('/products', ProductController.listProduct)
 routes.get('/products/:product_id', ProductController.searchProduct)
 
 // Criar cart
-routes.post('/carts/:user_id', CartController.createCart)
+routes.post('/carts/:user_id', authenticate, CartController.createCart)
 // listar de cart do usuario
-routes.get('/carts/:user_id', CartController.listUserCart)
+routes.get('/carts/:user_id', authenticate, CartController.listUserCart)
 
 // Pegar um cart especifico
-routes.get('/carts/:user_id/:cart_id', CartController.searchCart)
+routes.get('/carts/:user_id/:cart_id', authenticate, CartController.searchCart)
 
 module.exports = routes
