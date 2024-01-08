@@ -1,11 +1,11 @@
 const { Router } = require('express')
 
 const UserController = require('../controllers/UserController')
-const SessionController = require('../controllers/Login')
+const createSession = require('../controllers/Login')
 const ProductController = require('../controllers/ProductController')
 const CartController = require('../controllers/CartController')
 
-const { authenticate } = require('../middlewares')
+const authenticate = require('../middlewares/index')
 
 const routes = Router()
 
@@ -16,12 +16,12 @@ routes.get('/', (req, res) => {
 // Criar usuarios
 routes.post('/users', UserController.createUser)
 // listar todos os usuarios
-routes.get('/users', UserController.listUser)
+routes.get('/users', authenticate, UserController.listUser)
 // Pegar usuario especifico
-routes.get('/users/:user_id', UserController.seachUser)
+routes.get('/users/:user_id', authenticate, UserController.seachUser)
 
 // Login
-routes.post('/sessions', SessionController.createSession)
+routes.post('/sessions', createSession)
 
 // Criar produto
 routes.post('/products/:user_id', authenticate, ProductController.createProduct)

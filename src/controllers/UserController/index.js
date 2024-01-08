@@ -1,10 +1,29 @@
 const User = require('../../models/User')
+const bcrypt = require('bcrypt')
 
 const userController = {
    async createUser(req, res) {
-      const bodyData = req.body
+      const {username, password} = req.body
+
+      if(!username) return res.status(400).send('o nome e obrigatorio')
+
+      if(!password) return res.status(400).send('a senha e obrigatorio')
+
+      const userExists = await User.findOne({username:username})
+
+      if(userExists) return res.status(422).send('Usuario ja cadastrado')
+
+      const salt = await bcrypt.genSalt(12)
+      const passwordHash = await bcrypt.hash(password, salt)
+
+
       try {
-         const newUser = await User.create(bodyData)
+         const user = {
+            username:username, 
+            password: passwordHash
+         }
+         
+         const newUser = await User.create(user)
          return res.status(200).json(newUser)
 
       } catch (err) {

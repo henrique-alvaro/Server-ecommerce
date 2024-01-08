@@ -1,14 +1,19 @@
-const middlewares = {
+const jsonwebtoken = require('jsonwebtoken')
+require('dotenv').config()
 
-   authenticate(req, res, next) {
-      const { authenticate } = req.headers
-      const { user_id } = req.params
+const authenticate = async (req, res, next) => {
+   const authHeader = req.headers['authorization']
+   const token = authHeader && authHeader.split(" ")[1]
 
-      if(!authenticate) return res.status(400).json({ msg: 'no token'})
-      if(authenticate !== user_id) return res.status(400).json({msg: 'not allowed'})
+   if(!token) return res.status(400).send('Acess denied. No token provided');
 
+   try {
+      const secret = process.env.PRIVATE_KEY
+      jsonwebtoken.verify(token, secret)
       next()
+   } catch (err) {
+      return res.status(400).send('invalid token')
    }
 }
 
-module.exports = middlewares
+module.exports = authenticate
